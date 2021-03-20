@@ -1,0 +1,35 @@
+{% extends 'generic_list.html' %}
+{% load static %}
+{% block head_list %}
+<!-- <script src="{% static '../category/js/list.js' %}"></script> -->
+{% endblock %}
+
+{% block columns %}
+<tr>
+    <th>#ID</th>
+    <th style="width:35%">Nombre</th>
+    <th>Creado</th>
+    <th></th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+    {% for tag in object_list %}
+    <tr class="text-center">
+        <td class="text-center">{{forloop.counter}}</td>
+        <td class="text-left">{{ tag.nombre }}</td>
+        <td>{{ tag.creado|date:'d/m/y' }}</td>
+        <td>
+            <a href="#" onclick="modal_generic('{% url 'encuesta:borra-tag' tag.id %}')" class="btn btn-danger btn-sm"
+                role="button" aria-pressed="true"><i class="fas fa-trash-alt"></i>
+        </td>
+    </tr>
+    {% endfor %}
+{% endblock %}
+
+{% block buttons_list %}
+<a href="#" onclick="modal_generic('{% url 'encuesta:nuevo-tag' %}')" class="btn btn-primary btn-sm btn-flat btnTest"
+    role="button" aria-pressed="true">
+    <i class="fas fa-plus"></i> Nuevo Tag
+</a>
+{% endblock %}

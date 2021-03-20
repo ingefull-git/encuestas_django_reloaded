@@ -1,0 +1,39 @@
+<form class="form-horizontal" method="POST" action="{% url 'encuesta:nuevo-tag' %}">
+    <input type="hidden" name="action" value="{{ action }}">
+    {% csrf_token %}
+    <div class="modal-body">
+        <Label>Nombre:</Label>
+        {{form.nombre}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </div>
+</form>
+
+{% block script %}
+<script>
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        var parameters = $(this).serializeArray();
+        $.ajax({
+            url: '{% url 'encuesta:nuevo-tag' %}',
+            type: 'POST',
+            data: parameters,
+            dataType: 'json'
+        }).done(function (data) {
+            if (data.hasOwnProperty('error')) {
+                message_error(data.error);
+                return false;
+            } else {
+                location.reload(true);
+            }
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    });
+</script>
+{% endblock %}
